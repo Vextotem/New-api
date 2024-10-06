@@ -6,7 +6,11 @@ require('dotenv').config();
 const app = express();
 const router = express.Router();
 
+// Check if TMDB API Key exists
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
+if (!TMDB_API_KEY) {
+  throw new Error("TMDB_API_KEY is not defined in environment variables");
+}
 
 // Handle CORS
 app.use((req, res, next) => {
@@ -29,11 +33,17 @@ router.get('/:endpoint', async (req, res) => {
     });
     res.json(tmdbResponse.data);
   } catch (error) {
-    res.status(error.response?.status || 500).json({ error: error.message });
+    console.error("Error fetching data from TMDB:", error.message);
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data });
+    } else {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   }
 });
 
 app.use('/api/tmdb', router);
 
+// Export for serverless deployment
 module.exports = app;
 module.exports.handler = serverless(app);
