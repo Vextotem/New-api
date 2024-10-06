@@ -1,0 +1,14 @@
+{
+  "name": "tmdb-api-proxy",
+  "version": "1.0.0",
+  "description": "A proxy for TMDB API using a custom domain",
+  "main": "api/tmdb.js",
+  "scripts": {
+    "start": "node api/tmdb.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.4.0",
+    "serverless-http": "^2.7.0"
+  }
+}
