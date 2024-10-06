@@ -39,13 +39,14 @@ router.get('/:endpoint', async (req, res) => {
       params: {
         api_key: TMDB_API_KEY,
         ...queryParams
-      }
+      },
+      timeout: 5000, // 5 seconds timeout
     });
 
     console.log("Successfully fetched data from TMDB:", tmdbResponse.data);
     res.json(tmdbResponse.data);
   } catch (error) {
-    console.error("Error occurred while fetching from TMDB:", error.message);
+    console.error("Error occurred while fetching from TMDB:", error); // Log the entire error object
     if (error.response) {
       res.status(error.response.status).json({ error: error.response.data });
     } else {
